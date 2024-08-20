@@ -1,18 +1,29 @@
 pipeline {
+    // execute this pipeline on any agent
     agent any
 
+    // environment variables
     environment {
+        // dockerhub is an ID from Global Credentials
 		DOCKERHUB_CREDENTIALS=credentials('dockerhub')
 	}
+
+    // stages
     stages {
+        // first stage name
         stage('Docker Login') {
+            // steps
             steps {
-                // Add --password-stdin to run docker login command non-interactively
+                // Shell command to - Add --password-stdin to run docker login command non-interactively
                 sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
             }
         }
+
+        // second stage name
         stage('Build & push Dockerfile') {
+            // steps
             steps {
+                // shell commands to execute
                 sh """
                 cd Simple-Project/
                 ansible-playbook ansible-playbook.yml
